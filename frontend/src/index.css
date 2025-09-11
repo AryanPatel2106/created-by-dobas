@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --theme-bg: #f3eee8;
+  --theme-text: #4a4a4a;
+  --theme-pink: #f4cccc;
+  --theme-teal: #a4c2f4;
+  --theme-yellow: #fff2cc;
+  --theme-pink-hover: #e8b6b6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  overflow-x: hidden;
+}

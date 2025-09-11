@@ -1,0 +1,48 @@
+import path from 'path';
+import express from 'express';
+import cors from 'cors';
+import productRoutes from './routes/productRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
+import aboutUsRoutes from './routes/aboutUsRoutes.js';
+import testimonialRoutes from './routes/testimonialRoutes.js';
+import siteSettingsRoutes from './routes/siteSettingsRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
+import connectDB from './config/db.js';
+
+// The dotenv config is now only needed for local development, 
+// Railway will provide the variables in production.
+if (process.env.NODE_ENV !== 'production') {
+  const dotenv = await import('dotenv');
+  dotenv.config({ path: './backend/.env' });
+}
+
+connectDB();
+const app = express();
+app.use(express.json());
+app.use(cors());
+
+// --- API ROUTES ---
+app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/about-us', aboutUsRoutes);
+app.use('/api/testimonials', testimonialRoutes);
+app.use('/api/site-settings', siteSettingsRoutes);
+app.use('/api/upload', uploadRoutes);
+
+// --- DEPLOYMENT CONFIGURATION ---
+const __dirname = path.resolve();
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/dist')));
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
+  );
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running...');
+  });
+}
+// --- END DEPLOYMENT CONFIGURATION ---
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, console.log(`Backend server is running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`));
