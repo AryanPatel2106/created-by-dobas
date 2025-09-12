@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Linkedin, Twitter, Dribbble } from 'lucide-react';
-import axios from 'axios';
+import api from '../utils/api.js';
 
 const AboutUsPage = () => {
   const [content, setContent] = useState(null);
@@ -9,7 +9,7 @@ const AboutUsPage = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const { data } = await axios.get('/api/about-us');
+        const { data } = await api.get('/api/about-us');
         setContent(data);
       } catch (error) {
         console.error("Could not fetch About Us content", error);

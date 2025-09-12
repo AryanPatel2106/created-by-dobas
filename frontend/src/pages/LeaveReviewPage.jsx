@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import api from '../utils/api.js';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
 import { ArrowLeft } from 'lucide-react';
 
 const LeaveReviewPage = () => {
@@ -17,7 +17,7 @@ const LeaveReviewPage = () => {
             return;
         }
         try {
-            await axios.post('/api/testimonials', {
+            await api.post('/api/testimonials', {
                 user: {
                     name: user.name,
                     email: user.email,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api.js';
 import Product from '../components/Product';
 import { motion } from 'framer-motion';
 import FloatingShapes from '../components/FloatingShapes';
@@ -42,7 +42,7 @@ const TestimonialsSection = () => {
     const [testimonials, setTestimonials] = useState([]);
     useEffect(() => {
         const fetchTestimonials = async () => {
-            const { data } = await axios.get('/api/testimonials');
+            const { data } = await api.get('/api/testimonials');
             setTestimonials(data);
         };
         fetchTestimonials();
@@ -84,7 +84,7 @@ const HomePage = () => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data } = await axios.get('/api/products');
+      const { data } = await api.get('/api/products');
       setProducts(data);
     };
     fetchProducts();

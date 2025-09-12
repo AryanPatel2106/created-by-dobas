@@ -8,12 +8,13 @@ import testimonialRoutes from './routes/testimonialRoutes.js';
 import siteSettingsRoutes from './routes/siteSettingsRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import connectDB from './config/db.js';
+import { fileURLToPath } from 'url';
 
 // The dotenv config is now only needed for local development, 
-// Railway will provide the variables in production.
+// Render will provide the variables in production.
 if (process.env.NODE_ENV !== 'production') {
   const dotenv = await import('dotenv');
-  dotenv.config({ path: './backend/.env' });
+  dotenv.config();
 }
 
 connectDB();
@@ -30,12 +31,14 @@ app.use('/api/site-settings', siteSettingsRoutes);
 app.use('/api/upload', uploadRoutes);
 
 // --- DEPLOYMENT CONFIGURATION ---
-const __dirname = path.resolve();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '..');
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '/frontend/dist')));
+  app.use(express.static(path.join(rootDir, '/frontend/dist')));
   app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
+    res.sendFile(path.resolve(rootDir, 'frontend', 'dist', 'index.html'))
   );
 } else {
   app.get('/', (req, res) => {

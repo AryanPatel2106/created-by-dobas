@@ -1,5 +1,5 @@
- import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import api from '../utils/api.js';
 import { Link } from 'react-router-dom';
 import { Edit, Trash2 } from 'lucide-react';
 
@@ -11,14 +11,14 @@ const AdminProductListPage = () => {
   }, []);
 
   const fetchProducts = async () => {
-    const { data } = await axios.get('/api/products');
+    const { data } = await api.get('/api/products');
     setProducts(data);
   };
 
   const deleteHandler = async (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        await axios.delete(`/api/products/${id}`);
+        await api.delete(`/api/products/${id}`);
         fetchProducts(); // Refresh the list after deleting
       } catch (error) {
         alert('Error deleting product');

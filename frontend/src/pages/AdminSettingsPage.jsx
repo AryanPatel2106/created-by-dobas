@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api.js';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
@@ -16,7 +16,7 @@ const AdminSettingsPage = () => {
     useEffect(() => {
         const fetchSettings = async () => {
             try {
-                const { data } = await axios.get('/api/site-settings');
+                const { data } = await api.get('/api/site-settings');
                 setAboutStore(data.aboutStore);
                 setEmail(data.email);
                 setPhone(data.phone);
@@ -38,7 +38,7 @@ const AdminSettingsPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put('/api/site-settings', { aboutStore, email, phone, address, socials });
+            await api.put('/api/site-settings', { aboutStore, email, phone, address, socials });
             alert('Site settings updated successfully!');
             navigate('/admin');
         } catch (error) {

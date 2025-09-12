@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/api.js';
 import { useCart } from '../context/CartContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useCheckout } from '../context/CheckoutContext.jsx';
@@ -54,7 +54,7 @@ const ProductPage = () => {
 
   const fetchProduct = async () => {
     setLoading(true);
-    const { data } = await axios.get(`/api/products/${productId}`);
+    const { data } = await api.get(`/api/products/${productId}`);
     setProduct(data);
     setLoading(false);
   };
@@ -85,7 +85,7 @@ const ProductPage = () => {
   const reviewSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-        await axios.post(`/api/products/${productId}/reviews`, {
+        await api.post(`/api/products/${productId}/reviews`, {
             rating,
             comment,
             user: { name: user.name, email: user.email }

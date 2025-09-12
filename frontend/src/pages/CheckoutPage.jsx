@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import api from '../utils/api.js';
 import { useCheckout } from '../context/CheckoutContext';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
 import { MapPin } from 'lucide-react';
 
 const CheckoutPage = () => {
@@ -39,7 +39,7 @@ const CheckoutPage = () => {
     }
 
     try {
-      await axios.post('/api/orders', {
+      await api.post('/api/orders', {
         user: { name: user.name, email: user.email },
         orderItems: checkoutItems.map(item => ({
             name: item.name, price: item.price, image: item.image, customization: item.customization
@@ -48,7 +48,7 @@ const CheckoutPage = () => {
         totalPrice: subtotal,
         paymentMethod: paymentMethod,
       });
-
+  
       if (paymentMethod === 'Pay Online') {
         navigate('/payment');
       } else {

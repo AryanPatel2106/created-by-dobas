@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api.js';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Trash2, XCircle } from 'lucide-react';
 import Rating from '../components/Rating';
@@ -9,7 +9,7 @@ const AdminTestimonialListPage = () => {
 
     const fetchTestimonials = async () => {
         try {
-            const { data } = await axios.get('/api/testimonials/all');
+            const { data } = await api.get('/api/testimonials/all');
             setTestimonials(data);
         } catch (error) {
             console.error("Failed to fetch testimonials", error);
@@ -23,7 +23,7 @@ const AdminTestimonialListPage = () => {
     const approveHandler = async (id) => {
         if(window.confirm('Are you sure you want to approve this testimonial? It will appear on the homepage.')) {
             try {
-                await axios.put(`/api/testimonials/${id}/approve`);
+                await api.put(`/api/testimonials/${id}/approve`);
                 fetchTestimonials();
             } catch (error) {
                 alert('Failed to approve testimonial.');
@@ -34,7 +34,7 @@ const AdminTestimonialListPage = () => {
     const deleteHandler = async (id) => {
         if(window.confirm('Are you sure you want to permanently delete this testimonial?')) {
             try {
-                await axios.delete(`/api/testimonials/${id}`);
+                await api.delete(`/api/testimonials/${id}`);
                 fetchTestimonials();
             } catch (error) {
                 alert('Failed to delete testimonial.');

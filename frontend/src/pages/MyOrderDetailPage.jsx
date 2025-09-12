@@ -1,6 +1,6 @@
- import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/api.js';
 import { ArrowLeft } from 'lucide-react';
 
 const MyOrderDetailPage = () => {
@@ -10,7 +10,7 @@ const MyOrderDetailPage = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const { data } = await axios.get(`/api/orders/${orderId}`);
+        const { data } = await api.get(`/api/orders/${orderId}`);
         setOrder(data);
       } catch (error) {
         console.error("Could not fetch order details", error);

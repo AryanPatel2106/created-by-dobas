@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api.js';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import ImageUpload from '../components/ImageUpload';
@@ -17,7 +17,7 @@ const AdminProductCreatePage = () => {
     e.preventDefault();
     try {
       const newProduct = { name, price, image, category, countInStock, description };
-      await axios.post('/api/products', newProduct);
+      await api.post('/api/products', newProduct);
       alert('Product created successfully!');
       navigate('/admin/productlist');
     } catch (error) {

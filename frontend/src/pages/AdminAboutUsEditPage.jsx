@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, UploadCloud } from 'lucide-react';
 import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import heic2any from 'heic2any'; // The new HEIC conversion library
+import heic2any from 'heic2any';
+import api from '../utils/api.js';
 
 // --- RELIABLE Image Editor Modal ---
 const ImageEditorModal = ({ imageSrc, onSave, onCancel }) => {
@@ -128,7 +128,8 @@ const AdminAboutUsEditPage = () => {
     useEffect(() => {
         const fetchContent = async () => {
             try {
-                const { data } = await axios.get('/api/about-us');
+                // Use the api instance instead of axios directly
+                const { data } = await api.get('/api/about-us');
                 setTitle(data.title);
                 setDescription(data.description);
                 if (data.teamMembers && data.teamMembers.length) {
@@ -187,7 +188,8 @@ const AdminAboutUsEditPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put('/api/about-us', { title, description, teamMembers });
+            // Use the api instance instead of axios directly
+            await api.put('/api/about-us', { title, description, teamMembers });
             alert('About Us page updated successfully!');
             navigate('/admin');
         } catch (error) {

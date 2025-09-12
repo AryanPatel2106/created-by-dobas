@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api.js';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
@@ -8,7 +8,7 @@ const AdminOrderListPage = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const { data } = await axios.get('/api/orders');
+      const { data } = await api.get('/api/orders');
       setOrders(data);
     };
     fetchOrders();

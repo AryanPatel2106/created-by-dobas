@@ -1,5 +1,5 @@
- import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import api from '../utils/api.js';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -12,7 +12,7 @@ const MyOrdersListPage = () => {
       if (user && user.email) {
         try {
           // Send the user's email to the backend to get their specific orders
-          const { data } = await axios.post('/api/orders/myorders', { email: user.email });
+          const { data } = await api.post('/api/orders/myorders', { email: user.email });
           setOrders(data);
         } catch (error) {
           console.error("Could not fetch user's orders", error);

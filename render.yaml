@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: created-by-dobas
+    env: node
+    buildCommand: npm install && npm install --prefix backend
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_UPLOAD_PRESET
+        sync: false

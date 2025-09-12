@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/api.js';
 import { Instagram, Youtube, Linkedin } from 'lucide-react';
 import Logo from './Logo';
 import { useAuth } from '../context/AuthContext';
@@ -12,7 +12,7 @@ const Footer = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const { data } = await axios.get('/api/site-settings');
+        const { data } = await api.get('/api/site-settings');
         setSettings(data);
       } catch (error) {
         console.error("Failed to fetch site settings", error);

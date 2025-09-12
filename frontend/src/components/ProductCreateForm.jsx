@@ -1,5 +1,5 @@
- import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import api from '../utils/api.js';
 
 const ProductCreateForm = () => {
   const [name, setName] = useState('');
@@ -13,7 +13,7 @@ const ProductCreateForm = () => {
     e.preventDefault();
     try {
       const newProduct = { name, price, image, category, countInStock, description };
-      const { data } = await axios.post('/api/products', newProduct);
+      const { data } = await api.post('/api/products', newProduct);
       
       alert(`Success! Product "${data.name}" has been created.`);
       // Clear the form
