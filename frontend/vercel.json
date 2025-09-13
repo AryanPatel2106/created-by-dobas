@@ -1,1 +1,16 @@
-{}
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://created-by-dobas.onrender.com/api/$1"
+    },
+    {
+      "source": "/((?!assets).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
