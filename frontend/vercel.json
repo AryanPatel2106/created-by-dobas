@@ -1,13 +1,14 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": null,
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "https://created-by-dobas.onrender.com/api/$1"
     },
     {
-      "source": "/((?!assets/).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
