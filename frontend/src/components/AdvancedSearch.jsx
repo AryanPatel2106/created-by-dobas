@@ -22,6 +22,34 @@ const AdvancedSearch = ({ onSearch, onFilterChange, initialFilters = {} }) => {
   const [popularSearches, setPopularSearches] = useState([]);
   const [viewMode, setViewMode] = useState('grid');
 
+  // Fetch popular searches from API
+  const fetchPopularSearches = async () => {
+    try {
+      const { data } = await api.get('/api/search/popular');
+      setPopularSearches(data.popularSearches || []);
+    } catch (error) {
+      console.error('Failed to fetch popular searches:', error);
+      // Set fallback popular searches
+      setPopularSearches(['Birthday Cards', 'Wedding Gifts', 'Photo Frames', 'Custom Journals']);
+    }
+  };
+
+  // Fetch search suggestions
+  const fetchSuggestions = async (query) => {
+    if (!query || query.length < 2) {
+      setSuggestions([]);
+      return;
+    }
+    
+    try {
+      const { data } = await api.get(`/api/search/suggestions?q=${encodeURIComponent(query)}`);
+      setSuggestions(data.suggestions || []);
+    } catch (error) {
+      console.error('Failed to fetch suggestions:', error);
+      setSuggestions([]);
+    }
+  };
+
   const categories = [
     { value: 'all', label: 'All Categories' },
     { value: 'cards', label: 'Greeting Cards' },
@@ -56,6 +84,17 @@ const AdvancedSearch = ({ onSearch, onFilterChange, initialFilters = {} }) => {
     setFilters(prev => ({ ...prev, ...initialFilters }));
     fetchPopularSearches();
   }, [initialFilters]);
+
+  // Debounced search suggestions
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (searchTerm) {
+        fetchSuggestions(searchTerm);
+      }
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm]);
 
   useEffect(() => {
     const searchParams = {
