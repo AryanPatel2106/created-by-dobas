@@ -40,22 +40,14 @@ app.use('/api/blog', blogRoutes);
 app.use('/api', searchRoutes);
 app.use('/api/loyalty', loyaltyRoutes);
 
-// --- DEPLOYMENT CONFIGURATION ---
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const rootDir = path.resolve(__dirname, '..');
-
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(rootDir, '/frontend/dist')));
-  app.get('*', (req, res) =>
-    res.sendFile(path.resolve(rootDir, 'frontend', 'dist', 'index.html'))
-  );
-} else {
-  app.get('/', (req, res) => {
-    res.send('API is running...');
+// Backend API only - frontend served separately by Vercel
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Created by Dobas API is running!',
+    version: '1.0.0',
+    endpoints: ['/api/products', '/api/orders', '/api/users', '/api/reviews', '/api/blog', '/api/search', '/api/loyalty']
   });
-}
-// --- END DEPLOYMENT CONFIGURATION ---
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, console.log(`Backend server is running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`));
