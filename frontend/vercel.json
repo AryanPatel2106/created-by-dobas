@@ -1,9 +1,5 @@
 {
-  "functions": {
-    "app/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
+  "cleanUrls": true,
   "rewrites": [
     {
       "source": "/api/(.*)",
