@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Star, ShoppingCart, Heart, Share2, Package, Truck, Shield, ArrowLeft } from 'lucide-react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Star, ShoppingCart, Heart, Share2, Package, Truck, Shield, ArrowLeft, X, ShoppingBag, Zap } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useCheckout } from '../context/CheckoutContext';
 import api from '../utils/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
 import EnhancedCustomizationModal from '../components/EnhancedCustomizationModal';
 import ReviewsSection from '../components/ReviewsSection';
+import Rating from '../components/Rating';
 
 const CustomizationModal = ({ product, onConfirm, onCancel }) => {
   // This component's code remains exactly the same as before
