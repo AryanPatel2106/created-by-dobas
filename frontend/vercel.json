@@ -1,11 +1,13 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "https://created-by-dobas.onrender.com/api/$1"
     },
     {
-      "source": "/((?!assets|favicon|manifest|sw\\.js|offline\\.html).*)",
+      "source": "/((?!assets/).*)",
       "destination": "/index.html"
     }
   ]
