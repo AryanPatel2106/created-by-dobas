@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 // Mock product data for search functionality
@@ -344,4 +344,4 @@ function getAverageRating(reviews) {
   return sum / reviews.length;
 }
 
-module.exports = router;
+export default router;
