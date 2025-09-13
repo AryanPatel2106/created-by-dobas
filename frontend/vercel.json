@@ -7,7 +7,7 @@
       "destination": "https://created-by-dobas.onrender.com/api/$1"
     },
     {
-      "source": "/((?!assets/).*)",
+      "source": "/((?!assets/|favicon|manifest|sw\\.js|offline\\.html|\\.js$|\\.css$|\\.png$|\\.jpg$|\\.jpeg$|\\.gif$|\\.svg$|\\.ico$|\\.woff$|\\.woff2$|\\.ttf$|\\.eot$).*)",
       "destination": "/index.html"
     }
   ]
