@@ -2,24 +2,54 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Linkedin, Twitter, Dribbble } from 'lucide-react';
 import api from '../utils/api.js';
+import LoadingSpinner from '../components/LoadingSpinner';
+import ErrorMessage from '../components/ErrorMessage';
 
 const AboutUsPage = () => {
   const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchContent = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { data } = await api.get('/api/about-us');
+      setContent(data);
+    } catch (error) {
+      console.error("Could not fetch About Us content", error);
+      setError('Failed to load About Us content. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const { data } = await api.get('/api/about-us');
-        setContent(data);
-      } catch (error) {
-        console.error("Could not fetch About Us content", error);
-      }
-    };
     fetchContent();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="py-16 md:py-24">
+        <LoadingSpinner text="Loading About Us content..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="py-16 md:py-24 max-w-md mx-auto">
+        <ErrorMessage message={error} onRetry={fetchContent} />
+      </div>
+    );
+  }
+
   if (!content) {
-    return <div className="text-center py-20">Loading...</div>;
+    return (
+      <div className="py-16 md:py-24 text-center">
+        <p className="text-gray-600">No content available.</p>
+      </div>
+    );
   }
 
   return (

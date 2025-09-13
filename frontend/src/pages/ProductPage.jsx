@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import api from '../utils/api.js';
-import { useCart } from '../context/CartContext.jsx';
-import { useAuth } from '../context/AuthContext.jsx';
-import { useCheckout } from '../context/CheckoutContext.jsx';
-import { ShoppingBag, ArrowLeft, X, Zap, Star } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Rating from '../components/Rating';
+import { useParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Star, ShoppingCart, Heart, Share2, Package, Truck, Shield, ArrowLeft } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import api from '../utils/api';
+import LoadingSpinner from '../components/LoadingSpinner';
+import ErrorMessage from '../components/ErrorMessage';
+import EnhancedCustomizationModal from '../components/EnhancedCustomizationModal';
+import ReviewsSection from '../components/ReviewsSection';
 
 const CustomizationModal = ({ product, onConfirm, onCancel }) => {
   // This component's code remains exactly the same as before
@@ -41,8 +43,11 @@ const ProductPage = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [actionType, setActionType] = useState(null);
+  const [reviewLoading, setReviewLoading] = useState(false);
+  const [reviewError, setReviewError] = useState(null);
   
   // State for the new review form
   const [rating, setRating] = useState(0);
@@ -53,10 +58,17 @@ const ProductPage = () => {
   const { initiateCheckout } = useCheckout();
 
   const fetchProduct = async () => {
-    setLoading(true);
-    const { data } = await api.get(`/api/products/${productId}`);
-    setProduct(data);
-    setLoading(false);
+    try {
+      setLoading(true);
+      setError(null);
+      const { data } = await api.get(`/api/products/${productId}`);
+      setProduct(data);
+    } catch (error) {
+      console.error('Failed to fetch product:', error);
+      setError('Failed to load product. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -85,6 +97,8 @@ const ProductPage = () => {
   const reviewSubmitHandler = async (e) => {
     e.preventDefault();
     try {
+        setReviewLoading(true);
+        setReviewError(null);
         await api.post(`/api/products/${productId}/reviews`, {
             rating,
             comment,
@@ -95,19 +109,46 @@ const ProductPage = () => {
         setComment('');
         fetchProduct(); // Re-fetch product to show the new review
     } catch (error) {
-        alert(error.response?.data?.message || 'Error submitting review');
+        console.error('Failed to submit review:', error);
+        setReviewError(error.response?.data?.message || 'Error submitting review');
+    } finally {
+        setReviewLoading(false);
     }
   };
   
-  if (loading) return <div className="text-center py-20 text-gray-500">Loading...</div>;
-  if (!product) return <div className="text-center py-20 text-red-500">Product not found.</div>;
+  if (loading) {
+    return (
+      <div className="py-16 md:py-24">
+        <LoadingSpinner text="Loading product..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="py-16 md:py-24 max-w-md mx-auto">
+        <ErrorMessage message={error} onRetry={fetchProduct} />
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="py-16 md:py-24 text-center">
+        <p className="text-red-500 text-lg">Product not found.</p>
+        <Link to="/" className="text-blue-600 hover:underline mt-4 inline-block">
+          Return to Products
+        </Link>
+      </div>
+    );
+  }
   
   const hasUserReviewed = product.reviews.find(r => r.user === user?.email);
 
   return (
     <>
       <AnimatePresence>
-        {isModalOpen && <CustomizationModal product={product} onConfirm={handleConfirm} onCancel={() => setIsModalOpen(false)} />}
+        {isModalOpen && <EnhancedCustomizationModal product={product} onConfirm={handleConfirm} onCancel={() => setIsModalOpen(false)} />}
       </AnimatePresence>
       
       <div className="py-12">
@@ -138,55 +179,19 @@ const ProductPage = () => {
           </motion.div>
         </div>
 
-        {/* --- REVIEWS SECTION --- */}
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div>
-                <h2 className="font-playfair text-3xl font-bold text-gray-800 mb-6">Customer Reviews</h2>
-                {product.reviews.length === 0 && <div className="bg-white p-4 rounded-lg border text-gray-600">No reviews yet.</div>}
-                <div className="space-y-6">
-                    {product.reviews.map(review => (
-                        <div key={review._id} className="bg-white p-6 rounded-lg border">
-                            <div className="flex items-center justify-between">
-                                <strong className="text-gray-800">{review.name}</strong>
-                                <span className="text-sm text-gray-500">{new Date(review.createdAt).toLocaleDateString()}</span>
-                            </div>
-                            <Rating value={review.rating} />
-                            <p className="mt-2 text-gray-600">{review.comment}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <div>
-                <h2 className="font-playfair text-3xl font-bold text-gray-800 mb-6">Write a Review</h2>
-                {user ? (
-                    hasUserReviewed ? (
-                        <div className="bg-blue-100 p-4 rounded-lg border border-blue-200 text-blue-800">You have already submitted a review for this product.</div>
-                    ) : (
-                        <form onSubmit={reviewSubmitHandler} className="bg-white p-6 rounded-lg border">
-                            <div className="mb-4">
-                                <label className="block text-gray-700 font-semibold mb-2">Rating</label>
-                                <select value={rating} onChange={(e) => setRating(e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded-md p-2" required>
-                                    <option value="">Select...</option>
-                                    <option value="1">1 - Poor</option>
-                                    <option value="2">2 - Fair</option>
-                                    <option value="3">3 - Good</option>
-                                    <option value="4">4 - Very Good</option>
-                                    <option value="5">5 - Excellent</option>
-                                </select>
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 font-semibold mb-2">Comment</label>
-                                <textarea rows="4" value={comment} onChange={(e) => setComment(e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded-md p-2" required></textarea>
-                            </div>
-                            <button type="submit" className="w-full bg-[var(--theme-pink)] text-gray-800 font-bold py-3 rounded-lg text-lg hover:bg-[var(--theme-pink-hover)] transition-all">Submit Review</button>
-                        </form>
-                    )
-                ) : (
-                    <div className="bg-gray-100 p-4 rounded-lg border">
-                        Please <Link to="/login" className="text-blue-600 font-semibold hover:underline">sign in</Link> to write a review.
-                    </div>
-                )}
-            </div>
+        {/* --- ENHANCED REVIEWS SECTION --- */}
+        <div className="mt-20">
+          <h2 className="font-playfair text-4xl font-bold text-gray-800 mb-8 text-center">Customer Reviews</h2>
+          <ReviewsSection 
+            productId={product._id} 
+            reviews={product.reviews} 
+            onReviewAdded={(newReview) => {
+              setProduct(prev => ({
+                ...prev,
+                reviews: [newReview, ...prev.reviews]
+              }));
+            }}
+          />
         </div>
       </div>
     </>

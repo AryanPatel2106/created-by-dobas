@@ -2,11 +2,16 @@ import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import productRoutes from './routes/productRoutes.js';
-import orderRoutes from './routes/orderRoutes.js';
-import aboutUsRoutes from './routes/aboutUsRoutes.js';
-import testimonialRoutes from './routes/testimonialRoutes.js';
-import siteSettingsRoutes from './routes/siteSettingsRoutes.js';
-import uploadRoutes from './routes/uploadRoutes.js';
+const orderRoutes = require('./routes/orderRoutes.js');
+const aboutUsRoutes = require('./routes/aboutUsRoutes.js');
+const testimonialRoutes = require('./routes/testimonialRoutes.js');
+const siteSettingsRoutes = require('./routes/siteSettingsRoutes.js');
+const uploadRoutes = require('./routes/uploadRoutes.js');
+const userRoutes = require('./routes/userRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+const blogRoutes = require('./routes/blogRoutes');
+const searchRoutes = require('./routes/searchRoutes');
+const loyaltyRoutes = require('./routes/loyaltyRoutes');
 import connectDB from './config/db.js';
 import { fileURLToPath } from 'url';
 
@@ -29,6 +34,11 @@ app.use('/api/about-us', aboutUsRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/site-settings', siteSettingsRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/blog', blogRoutes);
+app.use('/api', searchRoutes);
+app.use('/api/loyalty', loyaltyRoutes);
 
 // --- DEPLOYMENT CONFIGURATION ---
 const __filename = fileURLToPath(import.meta.url);

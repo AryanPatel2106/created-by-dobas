@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, LogIn, LogOut, ListOrdered, UserCog, ShieldCheck } from 'lucide-react';
+import { Menu, X, ShoppingCart, User, LogOut, Settings, Package, Users, BarChart3, FileText, MessageSquare, Search, ShieldCheck, UserCog, LogIn, Star } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Logo from './Logo.jsx';
 
@@ -41,15 +41,23 @@ const Header = () => {
       <Link to="/about-us" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
         <span className="font-semibold">About Us</span>
       </Link>
+      <Link to="/search" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
+        <Search size={20} />
+        <span className="hidden sm:inline">Search</span>
+      </Link>
+      <Link to="/loyalty" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
+        <Star size={20} />
+        <span className="hidden sm:inline">Rewards</span>
+      </Link>
       <Link to="/cart" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
         <ShoppingCart size={20} />
         <span className="hidden sm:inline">Cart</span>
       </Link>
       {user ? (
         <>
-          <Link to="/my-orders" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
-            <ListOrdered size={20} />
-            <span className="hidden sm:inline">My Orders</span>
+          <Link to="/profile" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
+            <User size={20} />
+            <span className="hidden sm:inline">Profile</span>
           </Link>
           <span className="text-gray-700 px-4 hidden sm:inline">Hello, {user.given_name}</span>
           <button onClick={logout} className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">

@@ -29,6 +29,16 @@ import AdminAboutUsEditPage from './pages/AdminAboutUsEditPage.jsx';
 import LeaveReviewPage from './pages/LeaveReviewPage.jsx';
 import AdminTestimonialListPage from './pages/AdminTestimonialListPage.jsx';
 import AdminSettingsPage from './pages/AdminSettingsPage.jsx';
+import ShippingPolicyPage from './pages/ShippingPolicyPage.jsx';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage.jsx';
+import TermsOfServicePage from './pages/TermsOfServicePage.jsx';
+import SizeGuidePage from './pages/SizeGuidePage.jsx';
+import UserProfilePage from './pages/UserProfilePage.jsx';
+import AdminReviewsPage from './pages/AdminReviewsPage.jsx';
+import BlogPage from './pages/BlogPage.jsx';
+import BlogPostPage from './pages/BlogPostPage.jsx';
+import SearchPage from './pages/SearchPage.jsx';
+import LoyaltyPage from './pages/LoyaltyPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +47,10 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <HomePage /> },
       { path: '/about-us', element: <AboutUsPage /> },
+      { path: '/shipping-policy', element: <ShippingPolicyPage /> },
+      { path: '/privacy-policy', element: <PrivacyPolicyPage /> },
+      { path: '/terms-of-service', element: <TermsOfServicePage /> },
+      { path: '/size-guide', element: <SizeGuidePage /> },
       { path: '/product/:id', element: <ProductPage /> },
       { path: '/login', element: <LoginPage /> },
       { path: '/leave-review', element: <ProtectedRoute><LeaveReviewPage /></ProtectedRoute> },
@@ -46,6 +60,11 @@ const router = createBrowserRouter([
       { path: '/order-confirmation', element: <ProtectedRoute><OrderConfirmationPage /></ProtectedRoute> },
       { path: '/my-orders', element: <ProtectedRoute><MyOrdersListPage /></ProtectedRoute> },
       { path: '/order/:id', element: <ProtectedRoute><MyOrderDetailPage /></ProtectedRoute> },
+      { path: '/profile', element: <ProtectedRoute><UserProfilePage /></ProtectedRoute> },
+      { path: '/blog', element: <BlogPage /> },
+      { path: '/blog/:id', element: <BlogPostPage /> },
+      { path: '/search', element: <SearchPage /> },
+      { path: '/loyalty', element: <ProtectedRoute><LoyaltyPage /></ProtectedRoute> },
       { path: '/admin', element: <AdminRoute><AdminDashboardPage /></AdminRoute> },
       { path: '/admin/productlist', element: <AdminRoute><AdminProductListPage /></AdminRoute> },
       { path: '/admin/product/create', element: <AdminRoute><AdminProductCreatePage /></AdminRoute> },
@@ -54,6 +73,7 @@ const router = createBrowserRouter([
       { path: '/admin/order/:id', element: <AdminRoute><AdminOrderDetailPage /></AdminRoute> },
       { path: '/admin/about-us/edit', element: <AdminRoute><AdminAboutUsEditPage /></AdminRoute> },
       { path: '/admin/testimonials', element: <AdminRoute><AdminTestimonialListPage /></AdminRoute> },
+      { path: '/admin/reviews', element: <AdminRoute><AdminReviewsPage /></AdminRoute> },
       { path: '/admin/settings', element: <AdminRoute><AdminSettingsPage /></AdminRoute> },
     ],
   },

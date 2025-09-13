@@ -52,17 +52,23 @@ const Footer = () => {
 
           {/* Column 3: Important Links */}
           <div>
-            <h3 className="font-playfair text-xl font-bold text-gray-800 mb-4">Links</h3>
-            <ul className="text-gray-600 space-y-2">
-              <li><Link to="/" className="hover:text-[var(--theme-pink)] transition-colors">Home</Link></li>
-              <li><Link to="/about-us" className="hover:text-[var(--theme-pink)] transition-colors">About Us</Link></li>
+            <h3 className="font-semibold text-gray-800 mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              <li><Link to="/about-us" className="text-gray-600 hover:text-[var(--theme-pink)] transition-colors">About Us</Link></li>
+              <li><Link to="/blog" className="text-gray-600 hover:text-[var(--theme-pink)] transition-colors">Blog</Link></li>
+              <li><Link to="/size-guide" className="text-gray-600 hover:text-[var(--theme-pink)] transition-colors">Size Guide</Link></li>
+              <li><Link to="/shipping-policy" className="text-gray-600 hover:text-[var(--theme-pink)] transition-colors">Shipping & Returns</Link></li>
+              <li><Link to="/privacy-policy" className="text-gray-600 hover:text-[var(--theme-pink)] transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms-of-service" className="text-gray-600 hover:text-[var(--theme-pink)] transition-colors">Terms of Service</Link></li>
+              {user && (
+                <>
+                  <li><Link to="/my-orders" className="text-gray-600 hover:text-[var(--theme-pink)] transition-colors">My Orders</Link></li>
+                  <li><Link to="/leave-review" className="text-gray-600 hover:text-[var(--theme-pink)] transition-colors">Leave Review</Link></li>
+                </>
+              )}
               {user && user.isAdmin && (
-                <li><Link to="/admin" className="hover:text-[var(--theme-pink)] transition-colors">Admin Dashboard</Link></li>
+                <li><Link to="/admin" className="text-gray-600 hover:text-[var(--theme-pink)] transition-colors">Admin Panel</Link></li>
               )}
-               {user && !user.isAdmin && (
-                <li><Link to="/my-orders" className="hover:text-[var(--theme-pink)] transition-colors">My Orders</Link></li>
-              )}
-              <li><Link to="/leave-review" className="hover:text-[var(--theme-pink)] transition-colors">Leave a Review</Link></li>
             </ul>
           </div>
 
@@ -76,8 +82,15 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        <div className="border-t border-gray-200 mt-12 pt-8 text-center text-gray-500">
-          <p>&copy; {new Date().getFullYear()} Created by dobas. All Rights Reserved.</p>
+        <div className="border-t border-gray-200 mt-12 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
+            <p>&copy; {new Date().getFullYear()} Created by dobas. All Rights Reserved.</p>
+            <div className="flex gap-4 mt-4 md:mt-0">
+              <Link to="/shipping-policy" className="hover:text-[var(--theme-pink)] transition-colors">Shipping & Returns</Link>
+              <Link to="/privacy-policy" className="hover:text-[var(--theme-pink)] transition-colors">Privacy Policy</Link>
+              <Link to="/terms-of-service" className="hover:text-[var(--theme-pink)] transition-colors">Terms of Service</Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
