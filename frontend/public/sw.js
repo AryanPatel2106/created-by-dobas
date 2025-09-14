@@ -17,7 +17,8 @@ const API_CACHE_PATTERNS = [
   /\/api\/products/,
   /\/api\/about-us/,
   /\/api\/testimonials/,
-  /\/api\/blog/
+  /\/api\/blog/,
+  /\/api\/site-settings/
 ];
 
 // Install event - cache static files
@@ -61,7 +62,6 @@ self.addEventListener('activate', (event) => {
 // Fetch event - serve from cache with network fallback
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-  const url = new URL(request.url);
 
   // Skip non-GET requests
   if (request.method !== 'GET') {
@@ -70,6 +70,21 @@ self.addEventListener('fetch', (event) => {
 
   // Skip chrome-extension and other non-http requests
   if (!request.url.startsWith('http')) {
+    return;
+  }
+
+  // Skip requests to different origins (like Google Fonts)
+  try {
+    const url = new URL(request.url);
+    const isOwnOrigin = url.origin === self.location.origin;
+    const isAPIRequest = API_CACHE_PATTERNS.some(pattern => pattern.test(request.url));
+    
+    // Only handle requests to our own origin or API requests
+    if (!isOwnOrigin && !isAPIRequest) {
+      return;
+    }
+  } catch (error) {
+    // If URL parsing fails, skip this request
     return;
   }
 
@@ -124,6 +139,22 @@ async function networkFirst(request) {
     // Return offline page for navigation requests
     if (request.destination === 'document') {
       return getOfflinePage();
+    }
+    
+    // For API requests, return a meaningful error response instead of throwing
+    if (isAPIRequest(request)) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Network unavailable', 
+          message: 'Please check your internet connection and try again.',
+          offline: true 
+        }), 
+        { 
+          status: 503, 
+          statusText: 'Service Unavailable',
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
     }
     
     throw error;
