@@ -153,20 +153,29 @@ const ProductPage = () => {
         {isModalOpen && <EnhancedCustomizationModal product={product} onConfirm={handleConfirm} onCancel={() => setIsModalOpen(false)} />}
       </AnimatePresence>
       
-      <div className="py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <Link to="/" className="flex items-center gap-2 text-gray-500 hover:text-[var(--theme-pink)] mb-8 transition-colors">
           <ArrowLeft size={20} /> Back to Products
         </Link>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7 }} className="rounded-xl overflow-hidden shadow-xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }} 
+            animate={{ opacity: 1, scale: 1 }} 
+            transition={{ duration: 0.7 }} 
+            className="rounded-xl overflow-hidden shadow-xl sticky top-24"
+          >
             <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>
-            <h1 className="font-playfair text-4xl md:text-5xl font-bold text-gray-800 mb-4">{product.name}</h1>
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }} 
+            animate={{ opacity: 1, x: 0 }} 
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
+            <h1 className="font-playfair text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">{product.name}</h1>
             <div className="mb-4">
               <Rating value={product.rating} text={`${product.numReviews} reviews`} />
             </div>
-            <p className="text-4xl font-semibold text-gray-700 mb-6">₹{product.price}</p>
+            <p className="text-3xl sm:text-4xl font-semibold text-gray-700 mb-6">₹{product.price}</p>
             <p className="text-gray-600 mb-8 leading-relaxed">{product.description}</p>
             <div className="bg-white/70 p-6 rounded-lg shadow-inner">
               <div className="flex justify-between items-center mb-6">
@@ -174,16 +183,16 @@ const ProductPage = () => {
                 <span className={`font-bold ${product.countInStock > 0 ? 'text-green-600' : 'text-red-500'}`}>{product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}</span>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 mt-6">
-                <button onClick={() => handleActionClick('cart')} className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-300 text-gray-700 font-bold py-4 rounded-lg text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105" disabled={product.countInStock === 0}><ShoppingBag />Add To Cart</button>
-                <button onClick={() => handleActionClick('buyNow')} className="w-full flex items-center justify-center gap-3 bg-[var(--theme-pink)] text-gray-800 font-bold py-4 rounded-lg text-lg hover:bg-[var(--theme-pink-hover)] transition-all duration-300 transform hover:scale-105 shadow-lg" disabled={product.countInStock === 0}><Zap />Buy Now</button>
+                <button onClick={() => handleActionClick('cart')} className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-300 text-gray-700 font-bold py-3 sm:py-4 rounded-lg text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105" disabled={product.countInStock === 0}><ShoppingBag />Add To Cart</button>
+                <button onClick={() => handleActionClick('buyNow')} className="w-full flex items-center justify-center gap-3 bg-[var(--theme-pink)] text-gray-800 font-bold py-3 sm:py-4 rounded-lg text-lg hover:bg-[var(--theme-pink-hover)] transition-all duration-300 transform hover:scale-105 shadow-lg" disabled={product.countInStock === 0}><Zap />Buy Now</button>
               </div>
             </div>
           </motion.div>
         </div>
 
         {/* --- ENHANCED REVIEWS SECTION --- */}
-        <div className="mt-20">
-          <h2 className="font-playfair text-4xl font-bold text-gray-800 mb-8 text-center">Customer Reviews</h2>
+        <div className="mt-16 sm:mt-20">
+          <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-gray-800 mb-8 text-center">Customer Reviews</h2>
           <ReviewsSection 
             productId={product._id} 
             reviews={product.reviews} 

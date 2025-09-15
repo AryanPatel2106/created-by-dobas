@@ -6,6 +6,7 @@ import Logo from './Logo.jsx';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
   
   useEffect(() => {
@@ -16,8 +17,10 @@ const Header = () => {
 
   const headerClasses = `
     sticky top-0 z-50 transition-all duration-300
-    ${isScrolled ? 'bg-white/80 shadow-md backdrop-blur-lg' : 'bg-transparent'}
+    ${isScrolled || isMenuOpen ? 'bg-white/80 shadow-md backdrop-blur-lg' : 'bg-transparent'}
   `;
+
+  const closeMenu = () => setIsMenuOpen(false);
 
   const renderAdminNav = () => (
     <>
@@ -25,50 +28,50 @@ const Header = () => {
         <ShieldCheck size={16} />
         <span>Admin Mode</span>
       </div>
-      <Link to="/admin" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
+      <Link to="/admin" onClick={closeMenu} className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
         <UserCog size={20} />
-        <span className="hidden sm:inline">Dashboard</span>
+        <span>Dashboard</span>
       </Link>
-      <button onClick={logout} className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
+      <button onClick={() => { logout(); closeMenu(); }} className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
         <LogOut size={20} />
-        <span className="hidden sm:inline">Logout</span>
+        <span>Logout</span>
       </button>
     </>
   );
 
   const renderCustomerNav = () => (
     <>
-      <Link to="/about-us" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
+      <Link to="/about-us" onClick={closeMenu} className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
         <span className="font-semibold">About Us</span>
       </Link>
-      <Link to="/search" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
+      <Link to="/search" onClick={closeMenu} className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
         <Search size={20} />
-        <span className="hidden sm:inline">Search</span>
+        <span>Search</span>
       </Link>
-      <Link to="/loyalty" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
+      <Link to="/loyalty" onClick={closeMenu} className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
         <Star size={20} />
-        <span className="hidden sm:inline">Rewards</span>
+        <span>Rewards</span>
       </Link>
-      <Link to="/cart" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
+      <Link to="/cart" onClick={closeMenu} className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
         <ShoppingCart size={20} />
-        <span className="hidden sm:inline">Cart</span>
+        <span>Cart</span>
       </Link>
       {user ? (
         <>
-          <Link to="/profile" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
+          <Link to="/profile" onClick={closeMenu} className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
             <User size={20} />
-            <span className="hidden sm:inline">Profile</span>
+            <span>Profile</span>
           </Link>
-          <span className="text-gray-700 px-4 hidden sm:inline">Hello, {user.given_name}</span>
-          <button onClick={logout} className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
+          <span className="text-gray-700 px-4 py-2">Hello, {user.given_name}</span>
+          <button onClick={() => { logout(); closeMenu(); }} className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
             <LogOut size={20} />
-            <span className="hidden sm:inline">Logout</span>
+            <span>Logout</span>
           </button>
         </>
       ) : (
-        <Link to="/login" className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
+        <Link to="/login" onClick={closeMenu} className="flex items-center gap-2 text-gray-600 hover:text-[var(--theme-pink)] transition-colors px-4 py-2 rounded-lg">
           <LogIn size={20} />
-          <span className="hidden sm:inline">Sign In</span>
+          <span>Sign In</span>
         </Link>
       )}
     </>
@@ -77,13 +80,31 @@ const Header = () => {
   return (
     <header className={headerClasses}>
       <nav className="container mx-auto px-6 py-2 flex justify-between items-center">
-        <Link to="/">
+        <Link to="/" onClick={closeMenu}>
           <Logo />
         </Link>
-        <div className="flex items-center gap-2">
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-2">
           {user && user.isAdmin ? renderAdminNav() : renderCustomerNav()}
         </div>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-600 hover:text-[var(--theme-pink)]">
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
       </nav>
+
+      {/* Mobile Navigation Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white/90 backdrop-blur-lg">
+          <div className="container mx-auto px-6 py-4 flex flex-col items-start gap-2">
+            {user && user.isAdmin ? renderAdminNav() : renderCustomerNav()}
+          </div>
+        </div>
+      )}
     </header>
   );
 };

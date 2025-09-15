@@ -26,9 +26,9 @@ const Footer = () => {
   return (
     <footer className="bg-white/50 border-t border-gray-200 mt-20">
       <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
           {/* Column 1: About Store */}
-          <div className="flex flex-col">
+          <div className="flex flex-col items-center sm:items-start">
             <h3 className="font-playfair text-xl font-bold text-gray-800 mb-4">About the Store</h3>
             <p className="text-gray-600 text-sm leading-relaxed mb-4">
               {settings.aboutStore}
@@ -43,7 +43,7 @@ const Footer = () => {
           {/* Column 2: Shop Links */}
           <div>
             <h3 className="font-playfair text-xl font-bold text-gray-800 mb-4">Shop</h3>
-            <ul className="text-gray-600 space-y-2">
+            <ul className="space-y-2">
               <li><Link to="/" className="hover:text-[var(--theme-pink)] transition-colors">All Products</Link></li>
               <li><a href="#" className="hover:text-[var(--theme-pink)] transition-colors">Gifts</a></li>
               <li><a href="#" className="hover:text-[var(--theme-pink)] transition-colors">Cards</a></li>

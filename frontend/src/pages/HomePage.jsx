@@ -10,14 +10,14 @@ import FloatingShapes from '../components/FloatingShapes';
 import Rating from '../components/Rating';
 
 const HeroSection = () => (
-  <div className="relative text-center py-20 md:py-32 h-screen flex flex-col justify-center items-center overflow-hidden">
+  <div className="relative text-center py-20 md:py-32 min-h-screen flex flex-col justify-center items-center overflow-hidden px-4">
     <FloatingShapes />
     <div className="relative z-10">
       <motion.h1 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="font-playfair text-5xl md:text-7xl font-extrabold text-gray-800 mb-6"
+        className="font-playfair text-4xl sm:text-5xl md:text-7xl font-extrabold text-gray-800 mb-6"
       >
         Gifts Crafted with Heart
       </motion.h1>
@@ -25,7 +25,7 @@ const HeroSection = () => (
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto"
+        className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto"
       >
         Handcrafted with love, personalized just for you
       </motion.p>
@@ -36,7 +36,7 @@ const HeroSection = () => (
       >
         <Link 
           to="/product/1" 
-          className="inline-flex items-center gap-2 bg-[var(--theme-pink)] text-gray-800 font-bold py-4 px-8 rounded-full hover:bg-[var(--theme-pink-hover)] transition-all transform hover:scale-105 shadow-lg"
+          className="inline-flex items-center gap-2 bg-[var(--theme-pink)] text-gray-800 font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-full hover:bg-[var(--theme-pink-hover)] transition-all transform hover:scale-105 shadow-lg"
         >
           Shop Now
           <ArrowRight className="w-5 h-5" />
@@ -74,12 +74,12 @@ const SearchSection = ({ searchTerm, setSearchTerm, handleSearch, handleCategory
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search for personalized gifts, cards, frames..."
-                className="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-full focus:border-[var(--theme-pink)] focus:outline-none transition-colors"
+                placeholder="Search for gifts, cards, frames..."
+                className="w-full px-6 py-4 text-base sm:text-lg border-2 border-gray-200 rounded-full focus:border-[var(--theme-pink)] focus:outline-none transition-colors"
               />
               <button
                 type="submit"
-                className="absolute right-2 top-2 bg-[var(--theme-pink)] text-gray-800 p-3 rounded-full hover:bg-[var(--theme-pink-hover)] transition-colors"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-[var(--theme-pink)] text-gray-800 p-3 rounded-full hover:bg-[var(--theme-pink-hover)] transition-colors"
               >
                 <Search className="w-5 h-5" />
               </button>
@@ -92,7 +92,7 @@ const SearchSection = ({ searchTerm, setSearchTerm, handleSearch, handleCategory
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4"
         >
           {categories.map((category, index) => {
             const IconComponent = category.icon;
@@ -103,7 +103,7 @@ const SearchSection = ({ searchTerm, setSearchTerm, handleSearch, handleCategory
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * index }}
                 onClick={() => handleCategoryClick(category.id)}
-                className={`${category.color} p-6 rounded-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl`}
+                className={`${category.color} p-4 sm:p-6 rounded-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex flex-col items-center justify-center text-center`}
               >
                 <IconComponent className="w-8 h-8 mx-auto mb-3" />
                 <span className="text-sm font-semibold block">{category.name}</span>
@@ -142,7 +142,7 @@ const TestimonialsSection = () => {
         return (
             <div className="py-24 bg-white/50">
                 <div className="container mx-auto px-6">
-                    <h2 className="font-playfair text-4xl font-bold text-center mb-12 text-gray-800">What Our Customers Say</h2>
+                    <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-800">What Our Customers Say</h2>
                     <LoadingSpinner text="Loading testimonials..." />
                 </div>
             </div>
@@ -153,7 +153,7 @@ const TestimonialsSection = () => {
         return (
             <div className="py-24 bg-white/50">
                 <div className="container mx-auto px-6">
-                    <h2 className="font-playfair text-4xl font-bold text-center mb-12 text-gray-800">What Our Customers Say</h2>
+                    <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-800">What Our Customers Say</h2>
                     <ErrorMessage message={error} onRetry={fetchTestimonials} />
                 </div>
             </div>
@@ -165,8 +165,8 @@ const TestimonialsSection = () => {
     return (
         <div className="py-24 bg-white/50">
             <div className="container mx-auto px-6">
-                <h2 className="font-playfair text-4xl font-bold text-center mb-12 text-gray-800">What Our Customers Say</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-800">What Our Customers Say</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {testimonials.map((testimonial, index) => (
                         <motion.div 
                             key={testimonial._id}
@@ -174,7 +174,7 @@ const TestimonialsSection = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.5 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="bg-white p-8 rounded-lg shadow-lg border"
+                            className="bg-white p-6 sm:p-8 rounded-lg shadow-lg border"
                         >
                             <div className="flex items-center mb-4">
                                 <img src={testimonial.user.picture} alt={testimonial.user.name} className="w-12 h-12 rounded-full mr-4 object-cover" />
