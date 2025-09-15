@@ -62,8 +62,8 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="font-playfair text-3xl sm:text-4xl font-bold text-center mb-8 text-gray-800">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <h1 className="font-playfair text-3xl sm:text-4xl font-bold text-center mb-6 sm:mb-8 text-gray-800">
         Checkout
       </h1>
       
@@ -73,12 +73,14 @@ const CheckoutPage = () => {
         </div>
       )}
       
-      <EnhancedCheckoutForm
-        checkoutItems={checkoutItems}
-        user={user}
-        onPlaceOrder={handlePlaceOrder}
-        loading={loading}
-      />
+      <div className="max-w-4xl mx-auto">
+        <EnhancedCheckoutForm
+          checkoutItems={checkoutItems}
+          user={user}
+          onPlaceOrder={handlePlaceOrder}
+          loading={loading}
+        />
+      </div>
     </div>
   );
 };
