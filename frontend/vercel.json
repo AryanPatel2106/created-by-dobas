@@ -1,9 +1,0 @@
-{
-  "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "https://created-by-dobas.onrender.com/api/$1"
-    }
-  ]
-}
