@@ -9,13 +9,13 @@ const LoginPage = () => {
     const { login } = useAuth();
     
     // This is how Vite securely reads the .env variable
-    const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
+    const ADMIN_EMAILS = import.meta.env.VITE_ADMIN_EMAILS?.split(',') || [];
 
     const handleLoginSuccess = (credentialResponse) => {
         const decodedToken = jwtDecode(credentialResponse.credential);
         
-        // Check if the logged-in user's email matches the admin email
-        const isAdmin = decodedToken.email === ADMIN_EMAIL;
+        // Check if the logged-in user's email matches any of the admin emails
+        const isAdmin = ADMIN_EMAILS.includes(decodedToken.email);
         
         // Create a user object that includes the isAdmin flag
         const userPayload = {
